@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>何山 · AI 产品经理 / AI 设计师</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Syne:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --c1: #ff6b35;
+    --c2: #f7c59f;
+    --c3: #4ecdc4;
+    --c4: #a855f7;
+    --c5: #06b6d4;
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #18181f;
+    --border: rgba(255,255,255,0.07);
+    --text: #f0eee8;
+    --muted: rgba(240,238,232,0.45);
+    --accent: #ff6b35;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed; width: 10px; height: 10px;
+    background: var(--accent); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed; width: 36px; height: 36px;
+    border: 1px solid rgba(255,107,53,0.5); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease-out, width 0.3s, height 0.3s;
+  }
+  body:has(a:hover) .cursor, body:has(button:hover) .cursor { width: 20px; height: 20px; }
+
+  /* Noise overlay */
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1; opacity: 0.4;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.2rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(16px);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.15rem;
+    letter-spacing: -0.02em;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2.5rem; }
+  .nav-links a {
+    font-size: 0.8rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    font-size: 0.8rem; padding: 0.5rem 1.25rem;
+    border: 1px solid rgba(255,107,53,0.5);
+    border-radius: 2rem; color: var(--accent);
+    text-decoration: none; letter-spacing: 0.06em;
+    transition: background 0.2s, color 0.2s;
+  }
+  .nav-cta:hover { background: var(--accent); color: #fff; }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center;
+    padding: 8rem 3rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+  }
+  .hero-orb {
+    position: absolute; border-radius: 50%;
+    filter: blur(80px); opacity: 0.18;
+    animation: float 8s ease-in-out infinite;
+  }
+  .orb1 { width: 600px; height: 600px; background: var(--accent); top: -200px; right: -100px; animation-delay: 0s; }
+  .orb2 { width: 400px; height: 400px; background: var(--c4); bottom: -100px; left: 10%; animation-delay: 3s; }
+  .orb3 { width: 300px; height: 300px; background: var(--c3); top: 30%; left: 40%; animation-delay: 5s; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-30px) scale(1.05); }
+  }
+
+  .hero-content { position: relative; z-index: 2; max-width: 900px; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1.5rem;
+    padding: 0.4rem 1rem; border: 1px solid rgba(255,107,53,0.3);
+    border-radius: 2rem;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--accent); border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.5)} }
+
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3.5rem, 9vw, 7.5rem);
+    font-weight: 800; line-height: 0.95;
+    letter-spacing: -0.04em;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+  .hero-name .stroke {
+    -webkit-text-stroke: 1px rgba(240,238,232,0.4);
+    color: transparent;
+  }
+  .hero-name .accent { color: var(--accent); }
+
+  .hero-title {
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: var(--muted); margin-top: 1.2rem;
+    font-weight: 300; letter-spacing: 0.02em;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+  .hero-title strong { color: var(--text); font-weight: 500; }
+
+  .hero-desc {
+    max-width: 560px; margin-top: 1.5rem;
+    font-size: 0.95rem; line-height: 1.8;
+    color: var(--muted);
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 3rem;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem; font-weight: 800;
+    line-height: 1; letter-spacing: -0.03em;
+  }
+  .stat-num span { color: var(--accent); }
+  .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 4px; letter-spacing: 0.05em; }
+
+  .hero-cta {
+    display: flex; gap: 1rem; margin-top: 3rem;
+    animation: fadeUp 0.8s 0.5s ease both;
+  }
+  .btn-primary {
+    padding: 0.85rem 2rem; border-radius: 2rem;
+    background: var(--accent); color: #fff;
+    font-size: 0.85rem; font-weight: 500;
+    text-decoration: none; letter-spacing: 0.04em;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 30px rgba(255,107,53,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(255,107,53,0.4); }
+  .btn-ghost {
+    padding: 0.85rem 2rem; border-radius: 2rem;
+    border: 1px solid var(--border); color: var(--text);
+    font-size: 0.85rem; text-decoration: none; letter-spacing: 0.04em;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.2); background: var(--bg3); }
+
+  .hero-scroll {
+    position: absolute; bottom: 3rem; left: 3rem; z-index: 2;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 0.7rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+    animation: fadeUp 0.8s 0.8s ease both;
+  }
+  .scroll-line {
+    width: 40px; height: 1px; background: var(--muted);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine { 0%,100%{transform:scaleX(1)} 50%{transform:scaleX(0.5)} transform-origin:left; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Section commons */
+  section { padding: 7rem 3rem; position: relative; z-index: 2; }
+  .section-label {
+    font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::before {
+    content: ''; width: 24px; height: 1px; background: var(--accent);
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 800; letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  /* Skills section */
+  .skills-section { background: var(--bg2); }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem; margin-top: 3.5rem;
+  }
+  .skill-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.8rem;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .skill-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: var(--card-gradient, linear-gradient(90deg, var(--accent), var(--c3)));
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .skill-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.12); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+  .skill-card:hover::before { opacity: 1; }
+  .skill-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; margin-bottom: 1rem;
+  }
+  .skill-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem; font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .skill-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.7; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+  .skill-tag {
+    font-size: 0.7rem; padding: 3px 10px;
+    border: 1px solid var(--border); border-radius: 2rem;
+    color: var(--muted);
+  }
+
+  /* Projects */
+  .projects-header {
+    display: flex; justify-content: space-between;
+    align-items: flex-end; margin-bottom: 3.5rem; flex-wrap: wrap; gap: 1rem;
+  }
+  .filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filter-tab {
+    padding: 0.4rem 1rem; border-radius: 2rem;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--muted); font-size: 0.78rem; letter-spacing: 0.05em;
+    cursor: pointer; transition: all 0.2s; font-family: inherit;
+  }
+  .filter-tab:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+  .filter-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
+  }
+
+  /* Project cards */
+  .proj-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 20px; overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s, border-color 0.3s;
+    cursor: pointer;
+  }
+  .proj-card:hover { transform: translateY(-6px); box-shadow: 0 30px 60px rgba(0,0,0,0.5); border-color: rgba(255,255,255,0.1); }
+
+  .proj-card.large { grid-column: span 7; }
+  .proj-card.medium { grid-column: span 5; }
+  .proj-card.wide { grid-column: span 12; }
+  .proj-card.third { grid-column: span 4; }
+
+  .proj-media {
+    width: 100%; aspect-ratio: 16/9;
+    background: var(--bg2);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .proj-media.tall { aspect-ratio: 4/3; }
+  .proj-media.short { aspect-ratio: 21/9; }
+
+  /* Placeholder visuals */
+  .placeholder-visual {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 12px; position: relative; overflow: hidden;
+  }
+  .placeholder-visual .upload-icon {
+    width: 52px; height: 52px;
+    border: 1.5px dashed rgba(255,255,255,0.2);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    color: rgba(255,255,255,0.2);
+    position: relative; z-index: 1;
+  }
+  .placeholder-visual .upload-text {
+    font-size: 0.72rem; color: rgba(255,255,255,0.2);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    position: relative; z-index: 1;
+  }
+  .placeholder-visual .bg-pattern {
+    position: absolute; inset: 0;
+    opacity: 0.06;
+  }
+
+  /* Unique gradient backgrounds for each placeholder */
+  .grad-orange { background: linear-gradient(135deg, #ff6b35 0%, #f7c59f 50%, #ff6b35 100%); }
+  .grad-purple { background: linear-gradient(135deg, #a855f7 0%, #06b6d4 100%); }
+  .grad-teal { background: linear-gradient(135deg, #4ecdc4 0%, #44a1a0 100%); }
+  .grad-pink { background: linear-gradient(135deg, #f472b6 0%, #a855f7 100%); }
+  .grad-blue { background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%); }
+  .grad-green { background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%); }
+  .grad-warm { background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%); }
+
+  .proj-badge {
+    position: absolute; top: 14px; left: 14px;
+    font-size: 0.68rem; padding: 4px 10px;
+    border-radius: 2rem; letter-spacing: 0.08em;
+    font-weight: 500; z-index: 2;
+    backdrop-filter: blur(8px);
+  }
+  .badge-video { background: rgba(255,107,53,0.9); color: #fff; }
+  .badge-image { background: rgba(168,85,247,0.9); color: #fff; }
+  .badge-agent { background: rgba(6,182,212,0.9); color: #fff; }
+  .badge-saas { background: rgba(16,185,129,0.9); color: #fff; }
+
+  .play-btn {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 52px; height: 52px;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
+    border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; color: #fff;
+    opacity: 0; transition: opacity 0.3s, transform 0.3s;
+    z-index: 2;
+  }
+  .proj-card:hover .play-btn { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+
+  .proj-body { padding: 1.4rem 1.6rem 1.6rem; }
+  .proj-category {
+    font-size: 0.68rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .proj-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem; font-weight: 700;
+    line-height: 1.3; margin-bottom: 0.5rem;
+  }
+  .proj-desc {
+    font-size: 0.8rem; color: var(--muted);
+    line-height: 1.7;
+  }
+  .proj-footer {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    margin-top: 1.2rem; padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .proj-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .proj-tag {
+    font-size: 0.68rem; padding: 3px 9px;
+    border: 1px solid var(--border);
+    border-radius: 2rem; color: var(--muted);
+  }
+  .proj-arrow {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 0.9rem;
+    transition: border-color 0.2s, background 0.2s, color 0.2s;
+    flex-shrink: 0;
+  }
+  .proj-card:hover .proj-arrow {
+    border-color: var(--accent); background: var(--accent); color: #fff;
+  }
+
+  /* Before/After showcase */
+  .ba-showcase {
+    background: var(--bg2);
+  }
+  .ba-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem; margin-top: 3.5rem;
+  }
+  .ba-card {
+    border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--bg3);
+  }
+  .ba-images {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2px; aspect-ratio: 2/1;
+  }
+  .ba-img {
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ba-img .ba-placeholder {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 8px;
+  }
+  .ba-label {
+    position: absolute; top: 8px; left: 8px;
+    font-size: 0.62rem; padding: 2px 8px;
+    border-radius: 2rem; letter-spacing: 0.1em;
+    font-weight: 500; z-index: 2;
+    backdrop-filter: blur(4px);
+  }
+  .ba-label.before { background: rgba(0,0,0,0.5); color: rgba(255,255,255,0.7); }
+  .ba-label.after { background: rgba(255,107,53,0.8); color: #fff; }
+  .ba-info { padding: 1rem 1.2rem; }
+  .ba-title { font-size: 0.9rem; font-weight: 500; margin-bottom: 3px; }
+  .ba-subtitle { font-size: 0.75rem; color: var(--muted); }
+
+  /* Tech Stack */
+  .tech-section { background: var(--bg); }
+  .tech-marquee-wrap { margin-top: 3rem; overflow: hidden; position: relative; }
+  .tech-marquee-wrap::before, .tech-marquee-wrap::after {
+    content: ''; position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2;
+  }
+  .tech-marquee-wrap::before { left: 0; background: linear-gradient(to right, var(--bg), transparent); }
+  .tech-marquee-wrap::after { right: 0; background: linear-gradient(to left, var(--bg), transparent); }
+  .tech-marquee {
+    display: flex; gap: 1rem;
+    animation: marquee 25s linear infinite;
+    width: max-content;
+  }
+  .tech-marquee2 {
+    display: flex; gap: 1rem;
+    animation: marquee 30s linear infinite reverse;
+    width: max-content; margin-top: 1rem;
+  }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .tech-chip {
+    padding: 0.55rem 1.2rem;
+    border: 1px solid var(--border);
+    border-radius: 2rem; font-size: 0.8rem;
+    white-space: nowrap; background: var(--bg3);
+    color: var(--muted);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .tech-chip:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Contact / CTA */
+  .cta-section {
+    background: var(--bg2); text-align: center;
+    padding: 8rem 3rem;
+  }
+  .cta-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 800; letter-spacing: -0.04em;
+    line-height: 1.05;
+  }
+  .cta-title .grad-text {
+    background: linear-gradient(135deg, var(--accent), var(--c4), var(--c3));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .cta-sub {
+    font-size: 1rem; color: var(--muted);
+    margin-top: 1.2rem; max-width: 500px;
+    margin-left: auto; margin-right: auto;
+    line-height: 1.8;
+  }
+  .cta-contacts {
+    display: flex; gap: 1.5rem; justify-content: center;
+    margin-top: 3rem; flex-wrap: wrap;
+  }
+  .contact-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.85rem; color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .contact-item:hover { color: var(--text); }
+  .contact-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 1.5rem; }
+    .hero { padding: 7rem 1.5rem 4rem; }
+    .proj-card.large, .proj-card.medium, .proj-card.third { grid-column: span 12; }
+    .hero-stats { gap: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">何<span>山</span></div>
+  <div class="nav-links">
+    <a href="#skills">能力</a>
+    <a href="#projects">项目</a>
+    <a href="#showcase">作品</a>
+    <a href="#tech">技术栈</a>
+  </div>
+  <a href="mailto:heshancat@qq.com" class="nav-cta">联系我</a>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-bg">
+    <div class="hero-orb orb1"></div>
+    <div class="hero-orb orb2"></div>
+    <div class="hero-orb orb3"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">AI 产品经理 · AI 设计师 · 15年从业经验</div>
+    <h1 class="hero-name">
+      何<span class="accent">山</span><br>
+      <span class="stroke">HE SHAN</span>
+    </h1>
+    <p class="hero-title">
+      <strong>多模态 AI 内容生产</strong> 专家 ·
+      <strong>ComfyUI</strong> 技术型设计师 ·
+      <strong>AI 产品商业化</strong> 落地
+    </p>
+    <p class="hero-desc">
+      数字媒体艺术专业出身，深耕图像 / 视频类多模态 AI 内容生产领域，
+      兼具专业视觉审美与 AI 工程落地能力。
+      独立研发 SaaS 平台 Showin，贯通大模型应用编排与全栈工程完整链路。
+    </p>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">15<span>+</span></div>
+        <div class="stat-label">年从业经验</div>
+      </div>
+      <div>
+        <div class="stat-num">10<span>+</span></div>
+        <div class="stat-label">AI 功能独立上线</div>
+      </div>
+      <div>
+        <div class="stat-num">1<span>亿+</span></div>
+        <div class="stat-label">服务产品下载量</div>
+      </div>
+    </div>
+    <div class="hero-cta">
+      <a href="#projects" class="btn-primary">查看项目案例</a>
+      <a href="mailto:heshancat@qq.com" class="btn-ghost">联系合作 →</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    向下滚动
+  </div>
+</div>
+
+<!-- Skills -->
+<section id="skills" class="skills-section">
+  <div class="section-label reveal">核心能力</div>
+  <h2 class="section-title reveal">技能全景</h2>
+
+  <div class="skills-grid">
+    <div class="skill-card reveal" style="--card-gradient: linear-gradient(90deg,#ff6b35,#f7c59f)">
+      <div class="skill-icon" style="background:rgba(255,107,53,0.15)">🎯</div>
+      <div class="skill-name">AI 产品定义与决策</div>
+      <div class="skill-desc">将用户痛点与 AI 技术能力精准对接，独立完成需求定义、功能优先级排序；深度理解算法边界，有效消除需求与实现偏差。</div>
+      <div class="skill-tags">
+        <span class="skill-tag">需求洞察</span>
+        <span class="skill-tag">竞品分析</span>
+        <span class="skill-tag">功能规划</span>
+        <span class="skill-tag">模型选型</span>
+      </div>
+    </div>
+
+    <div class="skill-card reveal" style="--card-gradient: linear-gradient(90deg,#a855f7,#06b6d4)">
+      <div class="skill-icon" style="background:rgba(168,85,247,0.15)">🤖</div>
+      <div class="skill-name">Agent 自动化构建</div>
+      <div class="skill-desc">将复杂业务拆解为可组合 Skills 模块，设计职责边界与调用协议，由 Agent 统一编排调度；构建高内聚低耦合的 AI 自动化系统。</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Agent 编排</span>
+        <span class="skill-tag">Skills 设计</span>
+        <span class="skill-tag">LLM 应用</span>
+        <span class="skill-tag">AI 编程</span>
+      </div>
+    </div>
+
+    <div class="skill-card reveal" style="--card-gradient: linear-gradient(90deg,#4ecdc4,#06b6d4)">
+      <div class="skill-icon" style="background:rgba(78,205,196,0.15)">🎬</div>
+      <div class="skill-name">多模态 AI 商业化</div>
+      <div class="skill-desc">深耕 AI 图像与视频领域，精通图像生成/编辑/视频生成/编辑/风格化等复杂算法的产品化，主导多款产品 AI 能力升级。</div>
+      <div class="skill-tags">
+        <span class="skill-tag">图像生成</span>
+        <span class="skill-tag">视频生成</span>
+        <span class="skill-tag">风格化</span>
+        <span class="skill-tag">商业落地</span>
+      </div>
+    </div>
+
+    <div class="skill-card reveal" style="--card-gradient: linear-gradient(90deg,#f59e0b,#ef4444)">
+      <div class="skill-icon" style="background:rgba(245,158,11,0.15)">⚙️</div>
+      <div class="skill-name">ComfyUI 技术型设计师</div>
+      <div class="skill-desc">精通 ComfyUI 复杂工作流开发，覆盖图像生成/编辑、开源模型训练微调（LoRA）、视频生成/编辑，能从 0 到 1 独立完成算法功能原型。</div>
+      <div class="skill-tags">
+        <span class="skill-tag">ComfyUI</span>
+        <span class="skill-tag">LoRA 训练</span>
+        <span class="skill-tag">AnimateDiff</span>
+        <span class="skill-tag">ControlNet</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Projects -->
+<section id="projects">
+  <div class="projects-header">
+    <div>
+      <div class="section-label reveal">项目经历</div>
+      <h2 class="section-title reveal">代表项目</h2>
+    </div>
+    <div class="filter-tabs reveal">
+      <button class="filter-tab active" onclick="filterProjects('all',this)">全部</button>
+      <button class="filter-tab" onclick="filterProjects('saas',this)">SaaS 产品</button>
+      <button class="filter-tab" onclick="filterProjects('image',this)">图像 AI</button>
+      <button class="filter-tab" onclick="filterProjects('video',this)">视频 AI</button>
+      <button class="filter-tab" onclick="filterProjects('agent',this)">Agent 系统</button>
+    </div>
+  </div>
+
+  <div class="projects-grid">
+
+    <!-- Showin - Large featured -->
+    <div class="proj-card large reveal" data-cat="saas agent">
+      <div class="proj-media tall">
+        <div class="placeholder-visual">
+          <svg class="bg-pattern" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id="grid1" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5"/></pattern></defs>
+            <rect width="400" height="300" fill="url(#grid1)"/>
+          </svg>
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,107,53,0.3),rgba(168,85,247,0.2),rgba(6,182,212,0.15))"></div>
+          <div class="upload-icon" style="width:60px;height:60px;font-size:1.8rem">📹</div>
+          <div class="upload-text">上传 Showin 演示视频</div>
+        </div>
+        <span class="proj-badge badge-saas">SaaS 产品</span>
+        <div class="play-btn">▶</div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-category">独立产品 · 2026</div>
+        <div class="proj-title">硕影创客（Showin）· 一键成片 AI 视频创作平台</div>
+        <div class="proj-desc">面向自媒体/电商/企业培训的 AI 一键成片工具。用户上传素材即可自动生成带配音字幕的专业成品。独立完成产品设计、UI/UX、系统架构、云端部署的全链路交付。</div>
+        <div class="proj-footer">
+          <div class="proj-tags">
+            <span class="proj-tag">多 Agent 编排</span>
+            <span class="proj-tag">CTC 对齐算法</span>
+            <span class="proj-tag">GPU 渲染管线</span>
+            <span class="proj-tag">全栈</span>
+          </div>
+          <div class="proj-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ComfyUI Image Pipeline -->
+    <div class="proj-card medium reveal" data-cat="image">
+      <div class="proj-media">
+        <div class="placeholder-visual">
+          <svg class="bg-pattern" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id="dots1" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="white"/></pattern></defs>
+            <rect width="400" height="300" fill="url(#dots1)"/>
+          </svg>
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(168,85,247,0.35),rgba(6,182,212,0.25))"></div>
+          <div class="upload-icon" style="font-size:1.6rem">🖼</div>
+          <div class="upload-text">上传图像编辑效果图</div>
+        </div>
+        <span class="proj-badge badge-image">图像 AI</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-category">万兴科技 · AI 技术中心</div>
+        <div class="proj-title">ComfyUI 图像编辑功能集</div>
+        <div class="proj-desc">独立完成 AI 抠像、物体移除、图像修复、高清化、重绘、扩图、风格化等 9 项图像编辑功能的 ComfyUI 工作流开发与上线。</div>
+        <div class="proj-footer">
+          <div class="proj-tags">
+            <span class="proj-tag">ComfyUI</span>
+            <span class="proj-tag">SDXL</span>
+            <span class="proj-tag">PowerPaint</span>
+          </div>
+          <div class="proj-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video Generation -->
+    <div class="proj-card medium reveal" data-cat="video">
+      <div class="proj-media">
+        <div class="placeholder-visual">
+          <svg class="bg-pattern" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id="diag1" width="20" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="10" x2="20" y2="10" stroke="white" stroke-width="0.5"/></pattern></defs>
+            <rect width="400" height="300" fill="url(#diag1)"/>
+          </svg>
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,107,53,0.3),rgba(245,158,11,0.25))"></div>
+          <div class="upload-icon" style="font-size:1.6rem">🎞</div>
+          <div class="upload-text">上传视频生成 GIF/MP4</div>
+        </div>
+        <span class="proj-badge badge-video">视频 AI</span>
+        <div class="play-btn">▶</div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-category">万兴科技 · Filmora AI</div>
+        <div class="proj-title">AI 视频生成与风格化</div>
+        <div class="proj-desc">图生视频、文生视频、视频转绘、首尾帧控制、角色动作/表情控制等 5 类视频创意功能的 ComfyUI 工作流开发与产品化。</div>
+        <div class="proj-footer">
+          <div class="proj-tags">
+            <span class="proj-tag">AnimateDiff</span>
+            <span class="proj-tag">ControlNet</span>
+            <span class="proj-tag">首尾帧控制</span>
+          </div>
+          <div class="proj-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Character ID -->
+    <div class="proj-card third reveal" data-cat="image">
+      <div class="proj-media">
+        <div class="placeholder-visual">
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(244,114,182,0.3),rgba(168,85,247,0.3))"></div>
+          <div class="upload-icon" style="font-size:1.5rem">👤</div>
+          <div class="upload-text">上传角色 ID 一致性组图</div>
+        </div>
+        <span class="proj-badge badge-image">角色创意</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-category">万兴科技 · AI 技术中心</div>
+        <div class="proj-title">角色 ID 一致性系统</div>
+        <div class="proj-desc">基于 InstantID / IPAdapter，实现同一角色跨场景/风格高度一致性，支撑故事绘本生成、换脸、AI 模特等创意功能。</div>
+        <div class="proj-footer">
+          <div class="proj-tags">
+            <span class="proj-tag">InstantID</span>
+            <span class="proj-tag">IPAdapter</span>
+          </div>
+          <div class="proj-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ecommerce AI -->
+    <div class="proj-card third reveal" data-cat="image">
+      <div class="proj-media">
+        <div class="placeholder-visual">
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(16,185,129,0.3),rgba(6,182,212,0.3))"></div>
+          <div class="upload-icon" style="font-size:1.5rem">🛍</div>
+          <div class="upload-text">上传商品图生成效果</div>
+        </div>
+        <span class="proj-badge badge-image">图像 AI</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-category">自由职业 · 锐莱科技 2025</div>
+        <div class="proj-title">跨境电商 AI 商品图系统</div>
+        <div class="proj-desc">基于 ComfyUI + n8n 的批量图像生产流程，覆盖商品套图、换装/换脸/换配色，大幅降低运营资产生成门槛。</div>
+        <div class="proj-footer">
+          <div class="proj-tags">
+            <span class="proj-tag">IC-Light</span>
+            <span class="proj-tag">n8n</span>
+          </div>
+          <div class="proj-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Multi-Agent -->
+    <div class="proj-card third reveal" data-cat="agent">
+      <div class="proj-media">
+        <div class="placeholder-visual">
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,182,212,0.3),rgba(59,130,246,0.3))"></div>
+          <div class="upload-icon" style="font-size:1.5rem">🧠</div>
+          <div class="upload-text">上传 Agent 架构图</div>
+        </div>
+        <span class="proj-badge badge-agent">Agent 系统</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-category">硕影创客 · 技术架构</div>
+        <div class="proj-title">多 Agent 视频编排系统</div>
+        <div class="proj-desc">视觉认知 / 导演决策 / 编剧生成 / 语义匹配 4 个专项 Agent 协同，完成多模态视听理解→剪辑蓝图→剧本生成→声画对齐完整链路。</div>
+        <div class="proj-footer">
+          <div class="proj-tags">
+            <span class="proj-tag">LLM</span>
+            <span class="proj-tag">多模态</span>
+            <span class="proj-tag">Agent</span>
+          </div>
+          <div class="proj-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SelfzAI -->
+    <div class="proj-card medium reveal" data-cat="image video">
+      <div class="proj-media">
+        <div class="placeholder-visual">
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(245,158,11,0.3),rgba(239,68,68,0.25))"></div>
+          <div class="upload-icon" style="font-size:1.6rem">✨</div>
+          <div class="upload-text">上传 SelfzAI 功能效果图</div>
+        </div>
+        <span class="proj-badge badge-image">AI 玩法</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-category">万兴科技 · SelfzAI 海外版 2024</div>
+        <div class="proj-title">SelfzAI · 10+ AI 玩法功能</div>
+        <div class="proj-desc">面向海外市场的 AI 玩法应用，个人独立制作并上线 10+ 个 AI 功能，涵盖角色创意、图像编辑、风格化等，带来良好营收增长。</div>
+        <div class="proj-footer">
+          <div class="proj-tags">
+            <span class="proj-tag">ComfyUI</span>
+            <span class="proj-tag">海外市场</span>
+            <span class="proj-tag">快速迭代</span>
+          </div>
+          <div class="proj-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edraw -->
+    <div class="proj-card large reveal" data-cat="image agent">
+      <div class="proj-media short">
+        <div class="placeholder-visual">
+          <svg class="bg-pattern" viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id="hex1" width="30" height="26" patternUnits="userSpaceOnUse"><polygon points="15,1 29,8.5 29,17.5 15,25 1,17.5 1,8.5" fill="none" stroke="white" stroke-width="0.4"/></pattern></defs>
+            <rect width="800" height="240" fill="url(#hex1)"/>
+          </svg>
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(78,205,196,0.25),rgba(6,182,212,0.2),rgba(59,130,246,0.2))"></div>
+          <div class="upload-icon" style="font-size:1.6rem">📊</div>
+          <div class="upload-text">上传 Edraw AI 图像生成效果截图</div>
+        </div>
+        <span class="proj-badge badge-image">图像 AI</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-category">万兴科技 · Edraw 亿图 2024</div>
+        <div class="proj-title">亿图思维导图 · AI 图像生成能力升级</div>
+        <div class="proj-desc">为全球 2500 万用户的思维导图软件定制 AI 图像生成能力，利用 ComfyUI 独立完成算法开发与上线，显著丰富产品用法，实现营收增长。</div>
+        <div class="proj-footer">
+          <div class="proj-tags">
+            <span class="proj-tag">2500万用户</span>
+            <span class="proj-tag">ComfyUI</span>
+            <span class="proj-tag">图标生成</span>
+            <span class="proj-tag">海报生成</span>
+          </div>
+          <div class="proj-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Before/After Showcase -->
+<section id="showcase" class="ba-showcase">
+  <div class="section-label reveal">效果展示</div>
+  <h2 class="section-title reveal">图像 AI · Before / After</h2>
+  <p style="color:var(--muted);font-size:0.85rem;margin-top:0.8rem;margin-bottom:0" class="reveal">以下展示各类图像处理能力的实际效果对比</p>
+
+  <div class="ba-grid">
+
+    <div class="ba-card reveal">
+      <div class="ba-images">
+        <div class="ba-img">
+          <div class="ba-placeholder" style="background:linear-gradient(135deg,rgba(30,30,40,1),rgba(45,45,60,1))">
+            <div style="font-size:2rem;opacity:0.2">🖼</div>
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.15);letter-spacing:0.1em">上传原图</div>
+          </div>
+          <span class="ba-label before">Before</span>
+        </div>
+        <div class="ba-img">
+          <div class="ba-placeholder" style="background:linear-gradient(135deg,rgba(168,85,247,0.25),rgba(6,182,212,0.2))">
+            <div style="font-size:2rem;opacity:0.3">✂️</div>
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.2);letter-spacing:0.1em">上传抠像结果</div>
+          </div>
+          <span class="ba-label after">After</span>
+        </div>
+      </div>
+      <div class="ba-info">
+        <div class="ba-title">AI 智能抠像</div>
+        <div class="ba-subtitle">毫秒级主体识别 · 发丝级边缘处理</div>
+      </div>
+    </div>
+
+    <div class="ba-card reveal">
+      <div class="ba-images">
+        <div class="ba-img">
+          <div class="ba-placeholder" style="background:linear-gradient(135deg,rgba(30,30,40,1),rgba(45,45,60,1))">
+            <div style="font-size:2rem;opacity:0.2">🖼</div>
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.15);letter-spacing:0.1em">上传原图</div>
+          </div>
+          <span class="ba-label before">Before</span>
+        </div>
+        <div class="ba-img">
+          <div class="ba-placeholder" style="background:linear-gradient(135deg,rgba(255,107,53,0.2),rgba(245,158,11,0.2))">
+            <div style="font-size:2rem;opacity:0.3">🪄</div>
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.2);letter-spacing:0.1em">上传移除结果</div>
+          </div>
+          <span class="ba-label after">After</span>
+        </div>
+      </div>
+      <div class="ba-info">
+        <div class="ba-title">物体移除 · 背景补全</div>
+        <div class="ba-subtitle">无痕移除 · 语义感知背景修复</div>
+      </div>
+    </div>
+
+    <div class="ba-card reveal">
+      <div class="ba-images">
+        <div class="ba-img">
+          <div class="ba-placeholder" style="background:linear-gradient(135deg,rgba(30,30,40,1),rgba(45,45,60,1))">
+            <div style="font-size:2rem;opacity:0.2">🖼</div>
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.15);letter-spacing:0.1em">上传原图</div>
+          </div>
+          <span class="ba-label before">Before</span>
+        </div>
+        <div class="ba-img">
+          <div class="ba-placeholder" style="background:linear-gradient(135deg,rgba(78,205,196,0.2),rgba(59,130,246,0.2))">
+            <div style="font-size:2rem;opacity:0.3">🔭</div>
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.2);letter-spacing:0.1em">上传扩图结果</div>
+          </div>
+          <span class="ba-label after">After</span>
+        </div>
+      </div>
+      <div class="ba-info">
+        <div class="ba-title">AI 扩图 · 无限画布</div>
+        <div class="ba-subtitle">任意比例扩展 · 场景语义延伸</div>
+      </div>
+    </div>
+
+    <div class="ba-card reveal">
+      <div class="ba-images">
+        <div class="ba-img">
+          <div class="ba-placeholder" style="background:linear-gradient(135deg,rgba(30,30,40,1),rgba(45,45,60,1))">
+            <div style="font-size:2rem;opacity:0.2">🖼</div>
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.15);letter-spacing:0.1em">上传原图</div>
+          </div>
+          <span class="ba-label before">Before</span>
+        </div>
+        <div class="ba-img">
+          <div class="ba-placeholder" style="background:linear-gradient(135deg,rgba(244,114,182,0.2),rgba(168,85,247,0.2))">
+            <div style="font-size:2rem;opacity:0.3">🎨</div>
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.2);letter-spacing:0.1em">上传风格化结果</div>
+          </div>
+          <span class="ba-label after">After</span>
+        </div>
+      </div>
+      <div class="ba-info">
+        <div class="ba-title">图像风格化</div>
+        <div class="ba-subtitle">动漫 / 水彩 / 3D / 赛博朋克 多风格</div>
+      </div>
+    </div>
+
+    <div class="ba-card reveal">
+      <div class="ba-images">
+        <div class="ba-img">
+          <div class="ba-placeholder" style="background:linear-gradient(135deg,rgba(30,30,40,1),rgba(45,45,60,1))">
+            <div style="font-size:2rem;opacity:0.2">📦</div>
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.15);letter-spacing:0.1em">上传商品原图</div>
+          </div>
+          <span class="ba-label before">原图</span>
+        </div>
+        <div class="ba-img">
+          <div class="ba-placeholder" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(6,182,212,0.2))">
+            <div style="font-size:2rem;opacity:0.3">🛍</div>
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.2);letter-spacing:0.1em">上传场景合成图</div>
+          </div>
+          <span class="ba-label after">生成</span>
+        </div>
+      </div>
+      <div class="ba-info">
+        <div class="ba-title">AI 商品图生成</div>
+        <div class="ba-subtitle">白底图→多场景背景 · 电商主图一键生成</div>
+      </div>
+    </div>
+
+    <div class="ba-card reveal">
+      <div class="ba-images">
+        <div class="ba-img">
+          <div class="ba-placeholder" style="background:linear-gradient(135deg,rgba(30,30,40,1),rgba(45,45,60,1))">
+            <div style="font-size:2rem;opacity:0.2">🎞</div>
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.15);letter-spacing:0.1em">上传源视频帧</div>
+          </div>
+          <span class="ba-label before">Before</span>
+        </div>
+        <div class="ba-img">
+          <div class="ba-placeholder" style="background:linear-gradient(135deg,rgba(255,107,53,0.2),rgba(168,85,247,0.2))">
+            <div style="font-size:2rem;opacity:0.3">🎬</div>
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.2);letter-spacing:0.1em">上传转绘结果帧</div>
+          </div>
+          <span class="ba-label after">After</span>
+        </div>
+      </div>
+      <div class="ba-info">
+        <div class="ba-title">视频风格化转绘</div>
+        <div class="ba-subtitle">实拍→动漫/水墨/3D 渲染风格转换</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Tech Stack -->
+<section id="tech" class="tech-section">
+  <div class="section-label reveal">技术栈</div>
+  <h2 class="section-title reveal">工具 & 环境</h2>
+  <div class="tech-marquee-wrap" style="margin-top:3rem">
+    <div class="tech-marquee">
+      <span class="tech-chip">ComfyUI</span>
+      <span class="tech-chip">Claude / Gemini</span>
+      <span class="tech-chip">Cursor / VSCode</span>
+      <span class="tech-chip">Stable Diffusion XL</span>
+      <span class="tech-chip">AnimateDiff</span>
+      <span class="tech-chip">ControlNet</span>
+      <span class="tech-chip">InstantID</span>
+      <span class="tech-chip">IPAdapter FaceID</span>
+      <span class="tech-chip">Python · React</span>
+      <span class="tech-chip">FFmpeg</span>
+      <span class="tech-chip">Axure / Figma</span>
+      <span class="tech-chip">n8n 自动化</span>
+      <!-- repeat for infinite -->
+      <span class="tech-chip">ComfyUI</span>
+      <span class="tech-chip">Claude / Gemini</span>
+      <span class="tech-chip">Cursor / VSCode</span>
+      <span class="tech-chip">Stable Diffusion XL</span>
+      <span class="tech-chip">AnimateDiff</span>
+      <span class="tech-chip">ControlNet</span>
+      <span class="tech-chip">InstantID</span>
+      <span class="tech-chip">IPAdapter FaceID</span>
+      <span class="tech-chip">Python · React</span>
+      <span class="tech-chip">FFmpeg</span>
+      <span class="tech-chip">Axure / Figma</span>
+      <span class="tech-chip">n8n 自动化</span>
+    </div>
+    <div class="tech-marquee2" style="margin-top:1rem">
+      <span class="tech-chip">LoRA 训练 / 微调</span>
+      <span class="tech-chip">Wan2.1 视频生成</span>
+      <span class="tech-chip">IC-Light 打光</span>
+      <span class="tech-chip">AE / PS / PR</span>
+      <span class="tech-chip">Maya</span>
+      <span class="tech-chip">UE4 实时渲染</span>
+      <span class="tech-chip">TTS / 语音合成</span>
+      <span class="tech-chip">数字人 / 虚拟形象</span>
+      <span class="tech-chip">LLM 应用开发</span>
+      <span class="tech-chip">GPU 渲染管线</span>
+      <span class="tech-chip">Keyshot / Vray</span>
+      <span class="tech-chip">3D 资产全流程</span>
+      <!-- repeat -->
+      <span class="tech-chip">LoRA 训练 / 微调</span>
+      <span class="tech-chip">Wan2.1 视频生成</span>
+      <span class="tech-chip">IC-Light 打光</span>
+      <span class="tech-chip">AE / PS / PR</span>
+      <span class="tech-chip">Maya</span>
+      <span class="tech-chip">UE4 实时渲染</span>
+      <span class="tech-chip">TTS / 语音合成</span>
+      <span class="tech-chip">数字人 / 虚拟形象</span>
+      <span class="tech-chip">LLM 应用开发</span>
+      <span class="tech-chip">GPU 渲染管线</span>
+      <span class="tech-chip">Keyshot / Vray</span>
+      <span class="tech-chip">3D 资产全流程</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="section-label reveal" style="justify-content:center">联系方式</div>
+  <h2 class="cta-title reveal">
+    期待与你<br>
+    <span class="grad-text">共创 AI 产品</span>
+  </h2>
+  <p class="cta-sub reveal">
+    期望月薪 45–60K · 深圳 · 可面谈<br>
+    AI 产品经理 / AI 设计师 / AI 技术负责人
+  </p>
+  <div class="cta-contacts reveal">
+    <a href="tel:15220203337" class="contact-item">
+      <span class="contact-dot"></span>
+      15220203337
+    </a>
+    <a href="mailto:heshancat@qq.com" class="contact-item">
+      <span class="contact-dot"></span>
+      heshancat@qq.com
+    </a>
+    <a href="https://app.showinai.cn" target="_blank" class="contact-item">
+      <span class="contact-dot"></span>
+      app.showinai.cn
+    </a>
+  </div>
+</section>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx+'px'; cursor.style.top = my+'px'; });
+  function animRing() { rx += (mx-rx)*0.12; ry += (my-ry)*0.12; ring.style.left = rx+'px'; ring.style.top = ry+'px'; requestAnimationFrame(animRing); }
+  animRing();
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Filter
+  function filterProjects(cat, btn) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.proj-card').forEach(card => {
+      if (cat === 'all') { card.style.display = ''; return; }
+      const cats = card.dataset.cat || '';
+      card.style.display = cats.includes(cat) ? '' : 'none';
+    });
+  }
+</script>
+</body>
+</html>
