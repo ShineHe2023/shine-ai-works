@@ -66,11 +66,16 @@
   /* Nav */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    padding: 1.2rem 3rem;
-    display: flex; align-items: center; justify-content: space-between;
+    padding: 0;
     border-bottom: 1px solid var(--border);
     background: rgba(10,10,15,0.85);
     backdrop-filter: blur(16px);
+  }
+  .nav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1.2rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
   }
   .nav-logo {
     font-family: 'Syne', sans-serif;
@@ -119,7 +124,10 @@
 
   .hero-main {
     position: relative; z-index: 2;
-    padding: 4.5rem 4rem 3rem;
+    padding: 4.5rem 3rem 3rem;
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: end;
@@ -207,12 +215,16 @@
   /* Bottom bar */
   .hero-bottom {
     position: relative; z-index: 2;
-    padding: 2rem 4rem;
     border-top: 1px solid var(--border);
+    animation: fadeUp 0.6s 0.5s ease both;
+  }
+  .hero-bottom-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem 3rem;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
-    animation: fadeUp 0.6s 0.5s ease both;
   }
   .hero-desc {
     font-size: 0.82rem; line-height: 1.8;
@@ -269,7 +281,7 @@
   @media (max-width: 900px) {
     .hero-main { grid-template-columns: 1fr; padding: 9rem 2rem 3rem; }
     .hero-right { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
-    .hero-bottom { grid-template-columns: 1fr; gap: 2rem; padding: 2rem; }
+    .hero-bottom-inner { grid-template-columns: 1fr; gap: 2rem; padding: 2rem; }
     .hero-stats-row { justify-content: flex-start; }
     .hero-cta { justify-content: flex-start; }
     .hero-headline .line1,
@@ -278,7 +290,35 @@
   }
 
   /* Section commons */
-  section { padding: 7rem 3rem; position: relative; z-index: 2; }
+  section { padding: 7rem 0; position: relative; z-index: 2; }
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 3rem;
+  }
+
+  /* Apply container to all section direct children that need centering */
+  section > .section-label,
+  section > h2,
+  section > p,
+  section > .skills-grid,
+  section > .projects-header,
+  section > .projects-grid,
+  section > .ba-grid,
+  section > .video-compare-grid,
+  section > div[style*="text-align:center"],
+  section > .cta-title,
+  section > .cta-sub,
+  section > .cta-contacts,
+  section > .tech-marquee-wrap {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    box-sizing: border-box;
+  }
   .section-label {
     font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
     color: var(--accent); margin-bottom: 1rem;
@@ -778,14 +818,16 @@
 
 <!-- Nav -->
 <nav>
-  <div class="nav-logo">何<span>山</span></div>
-  <div class="nav-links">
-    <a href="#skills">能力</a>
-    <a href="#projects">项目</a>
-    <a href="#showcase">作品</a>
-    <a href="#tech">技术栈</a>
+  <div class="nav-inner">
+    <div class="nav-logo">何<span>山</span></div>
+    <div class="nav-links">
+      <a href="#skills">能力</a>
+      <a href="#projects">项目</a>
+      <a href="#showcase">作品</a>
+      <a href="#tech">技术栈</a>
+    </div>
+    <a href="javascript:void(0)" onclick="openScratch()" class="nav-cta">联系我</a>
   </div>
-  <a href="mailto:heshancat@qq.com" class="nav-cta">联系我</a>
 </nav>
 
 <!-- Hero -->
@@ -816,28 +858,30 @@
   </div>
 
   <div class="hero-bottom">
-    <p class="hero-desc">
-      深耕图像 / 视频类多模态 AI 内容生产领域，
-      兼具专业视觉审美与 AI 工程落地能力。
-      独立研发 SaaS 平台 Showin，贯通大模型编排与全栈工程完整链路。
-    </p>
-    <div class="hero-stats-row">
-      <div class="stat-item">
-        <div class="stat-num">15<span>+</span></div>
-        <div class="stat-label">年从业经验</div>
+    <div class="hero-bottom-inner">
+      <p class="hero-desc">
+        深耕图像 / 视频类多模态 AI 内容生产领域，
+        兼具专业视觉审美与 AI 工程落地能力。
+        独立研发 SaaS 平台 Showin，贯通大模型编排与全栈工程完整链路。
+      </p>
+      <div class="hero-stats-row">
+        <div class="stat-item">
+          <div class="stat-num">15<span>+</span></div>
+          <div class="stat-label">年从业经验</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">10<span>+</span></div>
+          <div class="stat-label">AI 功能上线</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">1<span>亿+</span></div>
+          <div class="stat-label">产品下载量</div>
+        </div>
       </div>
-      <div class="stat-item">
-        <div class="stat-num">10<span>+</span></div>
-        <div class="stat-label">AI 功能上线</div>
+      <div class="hero-cta">
+        <a href="#projects" class="btn-primary">查看项目</a>
+        <a href="javascript:void(0)" onclick="openScratch()" class="btn-ghost">联系合作</a>
       </div>
-      <div class="stat-item">
-        <div class="stat-num">1<span>亿+</span></div>
-        <div class="stat-label">产品下载量</div>
-      </div>
-    </div>
-    <div class="hero-cta">
-      <a href="#projects" class="btn-primary">查看项目</a>
-      <a href="mailto:heshancat@qq.com" class="btn-ghost">联系合作</a>
     </div>
   </div>
 </div>
@@ -1473,23 +1517,139 @@
     AI 产品经理 / AI 设计师 / AI 技术负责人
   </p>
   <div class="cta-contacts reveal">
-    <a href="tel:15220203337" class="contact-item">
-      <span class="contact-dot"></span>
-      15220203337
-    </a>
-    <a href="mailto:heshancat@qq.com" class="contact-item">
-      <span class="contact-dot"></span>
-      heshancat@qq.com
-    </a>
-    <a href="https://app.showinai.cn" target="_blank" class="contact-item">
-      <span class="contact-dot"></span>
-      app.showinai.cn
+    <a href="javascript:void(0)" onclick="openScratch()" class="btn-primary" style="margin-top:1rem">
+      刮开获取联系方式 ✦
     </a>
   </div>
 </section>
 
+<!-- Scratch Card Modal -->
+<div id="scratchModal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);align-items:center;justify-content:center;">
+  <div style="position:relative;width:320px;">
+
+    <!-- Scratch area -->
+    <div style="position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(99,179,237,0.25);">
+
+      <!-- Contact info layer — hidden underneath -->
+      <div id="scratchContent" style="background:linear-gradient(135deg,#1e1b4b,#1e3a5f);padding:2.2rem 2rem;text-align:center;">
+        <div style="margin-bottom:1.6rem;">
+          <div style="font-size:1rem;color:rgba(147,197,253,0.85);margin-bottom:8px;font-weight:500;">微信</div>
+          <div style="font-size:1.2rem;font-weight:600;color:#e2e8f0;font-family:'Syne',sans-serif;letter-spacing:0.04em;">heshancat</div>
+        </div>
+        <div style="width:40px;height:1px;background:rgba(99,179,237,0.25);margin:0 auto 1.6rem;"></div>
+        <div>
+          <div style="font-size:1rem;color:rgba(147,197,253,0.85);margin-bottom:8px;font-weight:500;">邮箱</div>
+          <div style="font-size:1.2rem;font-weight:600;color:#e2e8f0;font-family:'Syne',sans-serif;letter-spacing:0.04em;">heshancat@qq.com</div>
+        </div>
+      </div>
+
+      <!-- Canvas coating — sits on top, covers content completely -->
+      <canvas id="scratchCvs" style="position:absolute;inset:0;cursor:crosshair;touch-action:none;display:block;"></canvas>
+    </div>
+
+    <!-- Hint below card -->
+    <div id="scratchHint" style="text-align:center;margin-top:0.8rem;font-size:0.7rem;color:rgba(255,255,255,0.3);letter-spacing:0.08em;">用鼠标刮开涂层查看联系方式</div>
+
+    <!-- Close -->
+    <button onclick="closeScratch()" style="position:absolute;top:-14px;right:-14px;width:30px;height:30px;border-radius:50%;background:#1a1a24;border:1px solid var(--border);color:var(--muted);font-size:0.9rem;cursor:pointer;line-height:1;font-family:inherit;">✕</button>
+  </div>
+</div>
+
 <script>
-  // ── 千鸟闪电 cursor ──────────────────────────
+  // ── 刮刮乐卡片 ──────────────────────────────
+  let scratchInited = false;
+
+  function openScratch() {
+    const modal = document.getElementById('scratchModal');
+    modal.style.display = 'flex';
+    if (!scratchInited) { initScratch(); scratchInited = false; }
+    // re-init every open so card is fresh
+    initScratch();
+  }
+
+  function closeScratch() {
+    document.getElementById('scratchModal').style.display = 'none';
+  }
+
+  // close on backdrop click
+  document.getElementById('scratchModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('scratchModal')) closeScratch();
+  });
+
+  function initScratch() {
+    scratchInited = false;
+    const content = document.getElementById('scratchContent');
+    const cvs = document.getElementById('scratchCvs');
+    const ctx = cvs.getContext('2d');
+    const w = content.offsetWidth;
+    const h = content.offsetHeight;
+    cvs.width = w; cvs.height = h;
+    cvs.style.width  = w + 'px';
+    cvs.style.height = h + 'px';
+    document.getElementById('scratchHint').textContent = '用鼠标刮开涂层查看联系方式';
+
+    // Solid dark gray coating — no gradient, no transparency
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = '#2a2a2a';
+    ctx.fillRect(0, 0, w, h);
+
+    // Subtle texture lines — slightly lighter gray
+    for(let i = 0; i < h; i += 2) {
+      ctx.strokeStyle = i % 4 === 0 ? '#333' : '#282828';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(w, i); ctx.stroke();
+    }
+
+    // Title — large, inside coating
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx.font = 'bold 18px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('联系方式', w/2, h/2 - 28);
+
+    // Hint text below title
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.font = 'bold 13px sans-serif';
+    ctx.fillText('← 刮开这里 →', w/2, h/2 + 4);
+    ctx.fillStyle = 'rgba(255,255,255,0.25)';
+    ctx.font = '11px sans-serif';
+    ctx.fillText('SCRATCH TO REVEAL', w/2, h/2 + 22);
+
+    let painting = false;
+
+    function scratch(x, y) {
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = '#000';
+      ctx.beginPath();
+      ctx.arc(x, y, 22, 0, Math.PI * 2);
+      ctx.fill();
+
+      // check % revealed
+      const data = ctx.getImageData(0, 0, w, h).data;
+      let cleared = 0;
+      for(let i = 3; i < data.length; i += 4) if(data[i] < 128) cleared++;
+      if(cleared / (w * h) > 0.55 && !scratchInited) {
+        scratchInited = true;
+        ctx.clearRect(0, 0, w, h);
+        document.getElementById('scratchHint').textContent = '✓ 复制联系方式直接发消息吧！';
+      }
+    }
+
+    function pos(e) {
+      const r = cvs.getBoundingClientRect();
+      if(e.touches) return { x: e.touches[0].clientX - r.left, y: e.touches[0].clientY - r.top };
+      return { x: e.clientX - r.left, y: e.clientY - r.top };
+    }
+
+    cvs.onmousedown  = e => { painting = true; const p = pos(e); scratch(p.x, p.y); };
+    cvs.onmousemove  = e => { if(painting) { const p = pos(e); scratch(p.x, p.y); } };
+    cvs.onmouseup    = () => painting = false;
+    cvs.onmouseleave = () => painting = false;
+    cvs.ontouchstart = e => { e.preventDefault(); painting = true; const p = pos(e); scratch(p.x, p.y); };
+    cvs.ontouchmove  = e => { e.preventDefault(); if(painting) { const p = pos(e); scratch(p.x, p.y); } };
+    cvs.ontouchend   = () => painting = false;
+  }
+  // ─────────────────────────────────────────────
   const cvs = document.getElementById('chidori-canvas');
   const ctx2 = cvs.getContext('2d');
   const cursorEl = document.getElementById('cursor');
